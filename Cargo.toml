@@ -1,6 +1,6 @@
 [package]
 name = "weirdnet-chart"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2024"
 rust-version = "1.99"
 description = "Real-time charts: line, area, bar, candlestick, OHLC and volume series with axes, pan, zoom and live updates, over a renderer-independent core with optional GPUI and Ratatui backends."
