@@ -1,0 +1,34 @@
+[package]
+name = "weirdnet-chart"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.99"
+description = "Real-time charts: line, area, bar, candlestick, OHLC and volume series with axes, pan, zoom and live updates, over a renderer-independent core with optional GPUI and Ratatui backends."
+authors = ["Weird Brains LLC"]
+license = "BSD-3-Clause"
+repository = "https://github.com/WeirdBrains/weirdnet-chart"
+documentation = "https://docs.rs/weirdnet-chart"
+readme = "README.md"
+keywords = ["chart", "candlestick", "ratatui", "gpui", "weirdnet"]
+categories = ["visualization", "gui", "command-line-interface"]
+include = ["src/**", "examples/**", "tests/**", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[features]
+default = []
+# `ratatui::ChartWidget` (braille-dot rendering on ratatui-core).
+ratatui = ["dep:ratatui-core"]
+# `gpui::ChartView` (GPUI paths and quads, pan and zoom).
+gpui = ["dep:gpui"]
+# Enables GPUI's test platform for this crate's own GPUI tests; not needed by users.
+gpui-test-support = ["gpui", "gpui/test-support"]
+
+[dependencies]
+ratatui-core = { version = "0.1.2", optional = true }
+gpui = { version = "0.2.2", optional = true }
+
+[package.metadata.docs.rs]
+features = ["ratatui"]
+
+[[example]]
+name = "terminal_snapshot"
+required-features = ["ratatui"]
