@@ -1,0 +1,32 @@
+# weirdnet-chart release config for weirdnet-project-helpers (scripts/weirdnet_release.py).
+# Usage: python3 scripts/weirdnet_release.py [--patch|--major|--version X.Y.Z] [--dry-run]
+# Notes come from CHANGELOG.md `## [Unreleased]`; a message is optional.
+helpers = "0.4.0"
+project = "weirdnet-chart"
+next = ["docs.rs builds https://docs.rs/weirdnet-chart/{version} from the crates.io upload"]
+
+[[files]]
+kind = "cargo-package"
+paths = ["Cargo.toml"]
+primary = true
+
+[[files]]
+kind = "cargo-lock"
+path = "Cargo.lock"
+packages = ["weirdnet-chart"]
+
+[changelog]
+path = "CHANGELOG.md"
+
+[checks]
+commands = [
+  "cargo fmt --all -- --check",
+  "cargo clippy --all-targets -- -D warnings",
+  "cargo test --locked",
+  "cargo clippy --all-targets --features ratatui,gpui-test-support -- -D warnings",
+  "cargo test --locked --features ratatui,gpui-test-support",
+  "RUSTDOCFLAGS='-D warnings' cargo doc --no-deps --features ratatui,gpui",
+]
+
+[crates]
+publish = ["."]

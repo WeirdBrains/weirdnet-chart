@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    env:
+      # GPUI's Linux platform links these; its tests run on GPUI's headless test platform.
+      GPUI_DEPS: >-
+        pkg-config libxkbcommon-dev libxkbcommon-x11-dev libx11-xcb-dev libxcb1-dev
+        libwayland-dev libvulkan-dev libfontconfig-dev libfreetype-dev libssl-dev libzstd-dev
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: sudo apt-get update && sudo apt-get install -y $GPUI_DEPS
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo clippy --locked --all-targets --features ratatui -- -D warnings
+      - run: cargo test --locked --features ratatui
+      - run: cargo clippy --locked --all-targets --features ratatui,gpui-test-support -- -D warnings
+      - run: cargo test --locked --features ratatui,gpui-test-support
+      - run: RUSTDOCFLAGS='-D warnings' cargo doc --locked --no-deps --features ratatui,gpui
+      - run: python3 scripts/weirdnet_release.py validate
+      - run: cargo package --locked
+  platforms:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - run: cargo test --locked --features ratatui
+      - run: cargo clippy --locked --all-targets --features ratatui,gpui -- -D warnings
