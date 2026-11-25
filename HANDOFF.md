@@ -2,6 +2,20 @@
 
 Running notes for [weirdnet-chart](https://github.com/WeirdBrains/weirdnet-chart), newest first.
 
+## 2026-11-25: 0.1.0 released
+
+- What changed: [weirdnet-chart 0.1.0](https://crates.io/crates/weirdnet-chart/0.1.0) is on
+  crates.io (features `ratatui`, `gpui`, `gpui-test-support`); docs build at
+  [docs.rs](https://docs.rs/weirdnet-chart/0.1.0).
+- Commits: `b5c2c02` (`release: v0.1.0`), tag `v0.1.0`, and this entry.
+- Checks: [CI](https://github.com/WeirdBrains/weirdnet-chart/actions) passed on `71eba6f` on
+  Linux (fmt, clippy and tests with no features, `ratatui` and `ratatui,gpui-test-support`,
+  docs, release validation, `cargo package`), macOS and Windows (tests with `ratatui`, clippy
+  with `ratatui,gpui`); the release script re-ran its checks before tagging.
+- Not tested: as in the entry below (no real window, GPU or live terminal).
+- Left: listing the crate on the Weirdnet site.
+- Next: the first app integration.
+
 ## 2026-11-25: initial crate, unreleased
 
 - What changed: the first implementation. Ring-buffer series of points and candles with live
@@ -18,6 +32,4 @@ Running notes for [weirdnet-chart](https://github.com/WeirdBrains/weirdnet-chart
 - Not tested: GPUI drawing in a real window or on a GPU (tests use GPUI's headless test
   platform, which lays out and paints without a display); the GPUI backend on macOS and Windows
   beyond CI builds; the Ratatui widget in a live terminal (tests render into buffers).
-- Left: the first CI run on GitHub; the 0.1.0 release.
-- Next: release 0.1.0 with `python3 scripts/weirdnet_release.py --version 0.1.0 --dry-run`,
-  then without `--dry-run`.
+- Left: the first CI run on GitHub; the 0.1.0 release (both done, see above).
